@@ -31,6 +31,17 @@ async function userRoutes(fastify: FastifyInstance){
     }
   });
 
+  fastify.addSchema({
+    $id: "createProductSchema",
+    type: "object",
+    required: ["name"],
+    properties: {
+      name: {
+        type: 'string'
+      }
+    }
+  });
+
   fastify.post("/", {
     schema: {
       body: { $ref: 'createProductSchema#'},
@@ -59,9 +70,12 @@ async function userRoutes(fastify: FastifyInstance){
 
       console.log(body);
 
-      const products = fastify.addProduct(body);
+      const products = await fastify.addProduct(body);
+      const newProducts = products;
+      console.log("products:");
+      console.log(products);
 
-      return reply.code(201).send(products);
+      return await reply.code(201).send(products);
     }
   });
 
@@ -79,7 +93,7 @@ declare module "fastify" {
 
   export interface FastifyInstance {
     getProducts: () => {};
-    addProduct: (body: {}) => {};
+    addProduct: (body: {}) => string;
   }
 }
 
@@ -89,16 +103,15 @@ fastify.decorate('getProducts', () => {
   return products;
 });
 
-fastify.decorate('addProduct', (body: {}) => {
+fastify.decorate('addProduct', (body: {}): string => {
+  // console.log(body);
   const productsJSON = fs.readFileSync('./src/data/products.json', 'utf-8');
   const products = JSON.parse(productsJSON);
-
+  
   const newProducts = [...products, {id: 4, ...body}];
   const newProductsJSON = JSON.stringify(newProducts, null, 2);
-
   fs.writeFileSync('./src/data/products.json', newProductsJSON);
-
-  return newProducts;
+  return newProductsJSON;
 });
 
 
