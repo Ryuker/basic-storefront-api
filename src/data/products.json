@@ -22,17 +22,5 @@
     "name": "Chocolate",
     "description": "Sweet chocolate",
     "price": 1.5
-  },
-  {
-    "id": 4,
-    "name": "Chocolate Bar",
-    "description": "Delicious chocolate bar",
-    "price": 2.5
-  },
-  {
-    "id": 5,
-    "name": "Candy Bar",
-    "description": "Salty candy bar",
-    "price": 1
   }
 ]

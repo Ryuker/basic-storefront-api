@@ -17,7 +17,7 @@ const fastify = Fastify({
 //plugins
 async function userRoutes(fastify: FastifyInstance){
 
-  fastify.get("/", {
+  fastify.get("/products", {
     handler: async(request: FastifyRequest<{
       Body: {
         name: string;
@@ -42,7 +42,7 @@ async function userRoutes(fastify: FastifyInstance){
     }
   });
 
-  fastify.post("/", {
+  fastify.post("/products", {
     schema: {
       body: { $ref: 'createProductSchema#'},
       response: {
@@ -80,6 +80,18 @@ async function userRoutes(fastify: FastifyInstance){
   });
 
 
+
+  // delete all products
+  fastify.delete("/products", {
+    handler: async(request, reply: FastifyReply) => {
+
+      const resetProducts = await fastify.resetProducts();
+      return await reply.code(201).send(resetProducts);
+
+    }
+  });
+
+
   fastify.log.info("User routes registered");
 }
 
@@ -94,9 +106,11 @@ declare module "fastify" {
   export interface FastifyInstance {
     getProducts: () => {};
     addProduct: (body: {}) => string;
+    resetProducts: () => string;
   }
 }
 
+// decorators
 fastify.decorate('getProducts', () => {
   const productsJSON = fs.readFileSync('./src/data/products.json', 'utf-8');
   const products = JSON.parse(productsJSON);
@@ -107,10 +121,20 @@ fastify.decorate('addProduct', (body: {}): string => {
   // console.log(body);
   const productsJSON = fs.readFileSync('./src/data/products.json', 'utf-8');
   const products = JSON.parse(productsJSON);
-  
+
   const newProducts = [...products, {id: 4, ...body}];
   const newProductsJSON = JSON.stringify(newProducts, null, 2);
   fs.writeFileSync('./src/data/products.json', newProductsJSON);
+  return newProductsJSON;
+});
+
+fastify.decorate('resetProducts', (): string => {
+  const defaultProductsJSON = fs.readFileSync('./src/data/products-default.json', 'utf-8');
+  const products = JSON.parse(defaultProductsJSON);
+
+  const newProductsJSON = JSON.stringify(products, null, 2);
+  fs.writeFileSync('./src/data/products.json', newProductsJSON);
+
   return newProductsJSON;
 });
 
