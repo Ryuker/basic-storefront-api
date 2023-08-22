@@ -40,11 +40,11 @@ async function userRoutes(fastify: FastifyInstance){
 
       const id  = Number(request.params.id);
       const product = fastify.getSingleProduct(id);
-      
-      if (Object.keys(product).length !== 0)
+
+      if (product)
         return await reply.code(201).send(product); 
       else 
-        return await reply.code(220).send({error: "id not found", id} ); 
+        return await reply.code(220).send({error: "id not found", id, product} );
     }
   });
 
@@ -122,7 +122,7 @@ declare module "fastify" {
 
   export interface FastifyInstance {
     getProducts: () => {};
-    getSingleProduct: (id: number) => {};
+    getSingleProduct: (id: number) => {} | null;
     addProduct: (body: {}) => string;
     resetProducts: () => string;
   }
@@ -143,13 +143,10 @@ interface IProduct {
 fastify.decorate('getSingleProduct', (id: number) => {
   const productsJSON = fs.readFileSync('./src/data/products.json', 'utf-8');
   const products: IProduct[] = JSON.parse(productsJSON);
-  console.log(products);
 
-  const product = products.filter((product) => {
-    return product.id === id
-  });
+  const product = products.find((product) => product.id === id);
 
-  return product;
+  return product ?? null;
 });
 
 fastify.decorate('addProduct', (body: {}): string => {
