@@ -1,0 +1,22 @@
+[{
+  "id": 0,
+  "name": "Cheese",
+  "description": "Lovely cheese",
+  "price": 5.5
+},{
+  "id": 1,
+  "name": "Milk",
+  "description": "Yummi milk",
+  "price": 2.0
+},{
+  "id": 2,
+  "name": "Yoghurt",
+  "description": "Tasty yoghurt",
+  "price": 3.5
+},{
+  "id": 3,
+  "name": "Chocolate",
+  "description": "Sweet chocolate",
+  "price": 1.5
+}]
+
