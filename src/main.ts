@@ -41,10 +41,10 @@ async function userRoutes(fastify: FastifyInstance){
       const id  = Number(request.params.id);
       const product = fastify.getSingleProduct(id);
       
-      if (Object.keys(product).length === 0)
-        return await reply.code(220).send("object not found"); 
-      else  
-        return await reply.code(201).send(product);    
+      if (Object.keys(product).length !== 0)
+        return await reply.code(201).send(product); 
+      else 
+        return await reply.code(220).send({error: "id not found", id} ); 
     }
   });
 
