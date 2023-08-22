@@ -31,6 +31,23 @@ async function userRoutes(fastify: FastifyInstance){
     }
   });
 
+  fastify.get("/products/:id", {
+    handler: async(request: FastifyRequest<{
+      Params: {
+        id: string;
+      }
+    }>, reply: FastifyReply) => {
+
+      const id  = Number(request.params.id);
+      const product = fastify.getSingleProduct(id);
+      
+      if (Object.keys(product).length === 0)
+        return await reply.code(220).send("object not found"); 
+      else  
+        return await reply.code(201).send(product);    
+    }
+  });
+
   fastify.addSchema({
     $id: "createProductSchema",
     type: "object",
@@ -105,6 +122,7 @@ declare module "fastify" {
 
   export interface FastifyInstance {
     getProducts: () => {};
+    getSingleProduct: (id: number) => {};
     addProduct: (body: {}) => string;
     resetProducts: () => string;
   }
@@ -115,6 +133,23 @@ fastify.decorate('getProducts', () => {
   const productsJSON = fs.readFileSync('./src/data/products.json', 'utf-8');
   const products = JSON.parse(productsJSON);
   return products;
+});
+
+
+interface IProduct {
+    id: number;
+}
+
+fastify.decorate('getSingleProduct', (id: number) => {
+  const productsJSON = fs.readFileSync('./src/data/products.json', 'utf-8');
+  const products: IProduct[] = JSON.parse(productsJSON);
+  console.log(products);
+
+  const product = products.filter((product) => {
+    return product.id === id
+  });
+
+  return product;
 });
 
 fastify.decorate('addProduct', (body: {}): string => {
