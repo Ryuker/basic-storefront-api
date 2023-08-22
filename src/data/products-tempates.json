@@ -6,7 +6,8 @@
       "description": "Delicious chocolate bar",
       "price": 2.5
     }
-  },{ 
+  },
+  {
     "candy bar": {
       "id": 5,
       "name": "Candy Bar",
