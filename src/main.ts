@@ -1,6 +1,7 @@
 import Fastify, { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import * as fs from 'fs';
 import productsDefaultJSON from './data/products-default.json';
+import { escape } from 'querystring';
 
 // server declaration
 const fastify = Fastify({
@@ -66,7 +67,6 @@ async function userRoutes(fastify: FastifyInstance){
         201: {
           type: 'object',
           properties: {
-            id: { type: 'number' },
             name: { type: 'string' },
             description: { type: 'string' },
             price: { type: 'number' },
@@ -76,23 +76,27 @@ async function userRoutes(fastify: FastifyInstance){
     },
     handler: async(request: FastifyRequest<{
       Body: {
-        id: number;
         name: string;
         description: string;
         price: number;
       }
     }>, reply: FastifyReply) => {
   
-      const body = request.body;
+      const body: IProduct = request.body;
 
       console.log(body);
 
       const products = await fastify.addProduct(body);
-      const newProducts = products;
       console.log("products:");
       console.log(products);
 
-      return await reply.code(201).send(products);
+      if (products)
+        return await reply.code(201).send(products);
+      else 
+        return await reply.code(201).send({
+          error: "product already exists", 
+          name: body.name 
+        });
     }
   });
 
@@ -122,8 +126,8 @@ declare module "fastify" {
 
   export interface FastifyInstance {
     getProducts: () => {};
-    getSingleProduct: (id: number) => {} | null;
-    addProduct: (body: {}) => string;
+    getSingleProduct: (id: number) => {} | undefined;
+    addProduct: (body: IProduct) => string | undefined;
     resetProducts: () => string;
   }
 }
@@ -137,27 +141,44 @@ fastify.decorate('getProducts', () => {
 
 
 interface IProduct {
-    id: number;
+  name: string;
+  description: string;
+  price: number;
+}
+
+interface IProductObj extends IProduct{
+  id: number;
 }
 
 fastify.decorate('getSingleProduct', (id: number) => {
   const productsJSON = fs.readFileSync('./src/data/products.json', 'utf-8');
-  const products: IProduct[] = JSON.parse(productsJSON);
+  const products: IProductObj[] = JSON.parse(productsJSON);
 
   const product = products.find((product) => product.id === id);
 
-  return product ?? null;
+  return product ?? undefined;
 });
 
-fastify.decorate('addProduct', (body: {}): string => {
+fastify.decorate('addProduct', (body: IProduct): string | undefined => {
   // console.log(body);
   const productsJSON = fs.readFileSync('./src/data/products.json', 'utf-8');
-  const products = JSON.parse(productsJSON);
+  const products: IProductObj[] = JSON.parse(productsJSON);
+  console.log(products);
+  
+  const existingProduct = products.find((product: IProductObj) => product.name === body.name);
 
-  const newProducts = [...products, {id: 4, ...body}];
-  const newProductsJSON = JSON.stringify(newProducts, null, 2);
-  fs.writeFileSync('./src/data/products.json', newProductsJSON);
-  return newProductsJSON;
+  let newProducts = {};
+
+  if (!existingProduct)
+  {
+    newProducts = [...products, {id: products.length++, ...body}];
+    const newProductsJSON = JSON.stringify(newProducts, null, 2);
+    fs.writeFileSync('./src/data/products.json', newProductsJSON);
+    
+    return newProductsJSON;
+  }
+   
+  return undefined;
 });
 
 fastify.decorate('resetProducts', (): string => {
