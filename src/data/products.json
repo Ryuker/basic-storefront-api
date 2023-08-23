@@ -33,5 +33,12 @@
     "description": "Tasty chocolate bar",
     "price": 2,
     "price_id": "price_1HxVriGuhXEITAutt5KUKo2V"
+  },
+  {
+    "id": 6,
+    "name": "Fish",
+    "description": "Nasty Fish",
+    "price": 3,
+    "price_id": "price_1HxVriGuhXEITAutt5KUKo2V"
   }
 ]

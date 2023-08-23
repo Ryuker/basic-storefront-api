@@ -2,6 +2,7 @@ import Fastify, { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import * as fs from 'fs';
 import productsDefaultJSON from './data/products-default.json';
 import { escape } from 'querystring';
+import fastifyCors from '@fastify/cors';
 
 // server declaration
 const fastify = Fastify({
@@ -21,27 +22,23 @@ async function userRoutes(fastify: FastifyInstance){
   // hooks
   // hook to allow requests from other localhost port - security risk
   // https://stackoverflow.com/a/74131067
-  fastify.addHook('preHandler', (req, res, done) => {
-    // console.log("request method: " + req.method);
+  // fastify.addHook('preHandler', (req, res, done) => {
+  //   // example logic for conditionally adding headers
+  //   const allowedPaths = ["/products"];
+  //   if (allowedPaths.includes(req.routerPath)) {
+  //     res.header("Access-Control-Allow-Origin", "*");
+  //     res.header("Access-Control-Allow-Methods", "POST");
+  //     res.header("Access-Control-Allow-Headers",  "*");
+  //   }
 
-    // example logic for conditionally adding headers
-    const allowedPaths = ["/products"];
-    if (allowedPaths.includes(req.routerPath)) {
-      res.header("Access-Control-Allow-Origin", "*");
-      res.header("Access-Control-Allow-Methods", "POST");
-      res.header("Access-Control-Allow-Headers",  "*");
-    }
-
-    console.log(/OPTIONS:/.test(req.method));
-    const isPreflight = /options/i.test(req.method);
-    console.log("isPrefLight: " + isPreflight);
-    if (isPreflight) {
-      console.log(req.method);
-      return res.send();
-    }
+  //   const isPreflight = /options/i.test(req.method);
+  //   if (isPreflight) {
+  //     console.log(req.method);
+  //     return res.send();
+  //   }
         
-    done();
-  })
+  //   done();
+  // })
 
   fastify.get("/products", {
     handler: async(request: FastifyRequest<{
@@ -201,7 +198,7 @@ fastify.decorate('addProduct', (body: IProduct): string | undefined => {
 
   if (!existingProduct)
   {
-    newProducts = [...products, {id: products.length++, ...body}];
+    newProducts = [...products, {id: products.length += 1, ...body}];
     const newProductsJSON = JSON.stringify(newProducts, null, 2);
     fs.writeFileSync('./src/data/products.json', newProductsJSON);
     
@@ -225,7 +222,7 @@ fastify.decorate('resetProducts', (): string => {
 // register the plugins
 fastify.register(userRoutes, { prefix: "/" })
 fastify.register(fastifyCors, {
-  origin: "http://localhost:5173",
+  origin: "http://127.0.0.1:5173",
 });
 
 
