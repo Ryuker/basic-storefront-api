@@ -60,7 +60,7 @@ async function userRoutes(fastify: FastifyInstance){
     }
   });
 
-  fastify.put("/products", {
+  fastify.post("/products", {
     schema: {
       body: { $ref: 'createProductSchema#'},
       response: {
