@@ -18,6 +18,26 @@ const fastify = Fastify({
 //plugins
 async function userRoutes(fastify: FastifyInstance){
 
+  // hooks
+  // hook to allow requests from other localhost port - security risk
+  fastify.addHook('preHandler', (req, res, done) => {
+
+    // example logic for conditionally adding headers
+    const allowedPaths = ["/products"];
+    if (allowedPaths.includes(req.routerPath)) {
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Methods", "POST");
+      res.header("Access-Control-Allow-Headers",  "*");
+    }
+  
+    const isPreflight = /options/i.test(req.method);
+    if (isPreflight) {
+      return res.send();
+    }
+        
+    done();
+  })
+
   fastify.get("/products", {
     handler: async(request: FastifyRequest<{
       Body: {
@@ -25,10 +45,13 @@ async function userRoutes(fastify: FastifyInstance){
         age: number;
       }
     }>, reply: FastifyReply) => {
+      
+      // gives access from localhost - security risk!
+      // reply.header("Access-Control-Allow-Origin", "*");
 
       const products = fastify.getProducts();
 
-      return reply.code(201).send(products);
+      return await reply.code(201).send(products);
     }
   });
 
