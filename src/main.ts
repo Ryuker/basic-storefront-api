@@ -20,7 +20,9 @@ async function userRoutes(fastify: FastifyInstance){
 
   // hooks
   // hook to allow requests from other localhost port - security risk
+  // https://stackoverflow.com/a/74131067
   fastify.addHook('preHandler', (req, res, done) => {
+    // console.log("request method: " + req.method);
 
     // example logic for conditionally adding headers
     const allowedPaths = ["/products"];
@@ -29,9 +31,12 @@ async function userRoutes(fastify: FastifyInstance){
       res.header("Access-Control-Allow-Methods", "POST");
       res.header("Access-Control-Allow-Headers",  "*");
     }
-  
+
+    console.log(/OPTIONS:/.test(req.method));
     const isPreflight = /options/i.test(req.method);
+    console.log("isPrefLight: " + isPreflight);
     if (isPreflight) {
+      console.log(req.method);
       return res.send();
     }
         
@@ -83,7 +88,7 @@ async function userRoutes(fastify: FastifyInstance){
     }
   });
 
-  fastify.post("/products", {
+  fastify.post("products", {
     schema: {
       body: { $ref: 'createProductSchema#'},
       response: {
@@ -104,7 +109,9 @@ async function userRoutes(fastify: FastifyInstance){
         price: number;
       }
     }>, reply: FastifyReply) => {
-  
+      console.log(request);
+      console.log("method: " + request.method);
+      console.log("receiving product");
       const body: IProduct = request.body;
 
       console.log(body);
@@ -217,6 +224,9 @@ fastify.decorate('resetProducts', (): string => {
 
 // register the plugins
 fastify.register(userRoutes, { prefix: "/" })
+fastify.register(fastifyCors, {
+  origin: "http://localhost:5173",
+});
 
 
 // server function to run the server

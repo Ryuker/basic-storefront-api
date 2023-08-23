@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Ryuker/basic-storefront-api#readme",
   "dependencies": {
+    "@fastify/cors": "^8.3.0",
     "@fastify/swagger": "^8.9.0",
     "fastify": "^4.21.0"
   },
