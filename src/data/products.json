@@ -1,30 +1,30 @@
 [
   {
-    "id": 0,
+    "id": 1,
     "name": "Cheese",
     "description": "Lovely cheese",
     "price": 5.5
   },
   {
-    "id": 1,
+    "id": 2,
     "name": "Milk",
     "description": "Yummi milk",
     "price": 2
   },
   {
-    "id": 2,
+    "id": 3,
     "name": "Yoghurt",
     "description": "Tasty yoghurt",
     "price": 3.5
   },
   {
-    "id": 3,
+    "id": 4,
     "name": "Chocolate",
     "description": "Sweet chocolate",
     "price": 1.5
   },
   {
-    "id": 4,
+    "id": 5,
     "name": "Candy Bar",
     "description": "Salty candy bar",
     "price": 1
