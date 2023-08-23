@@ -28,17 +28,5 @@
     "name": "Candy Bar",
     "description": "Salty candy bar",
     "price": 1
-  },
-  {
-    "id": 5,
-    "name": "Bla",
-    "description": "Salty candy bar",
-    "price": 1
-  },
-  {
-    "id": 6,
-    "name": "Sja",
-    "description": "Salty candy bar",
-    "price": 1
   }
 ]
