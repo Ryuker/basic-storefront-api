@@ -127,6 +127,22 @@ async function userRoutes(fastify: FastifyInstance){
     }
   });
 
+  // delete single product
+  fastify.delete("/products/:id", {
+    handler: async(request: FastifyRequest<{
+      Params: {
+        id: string;
+      }
+    }>, reply: FastifyReply) => {
+      const id  = Number(request.params.id);
+
+      const products = fastify.deleteProduct(id);
+
+      return await reply.code(201).send(products);
+
+    }
+  });
+
 
 
   // delete all products
@@ -155,6 +171,7 @@ declare module "fastify" {
     getProducts: () => {};
     getSingleProduct: (id: number) => {} | undefined;
     addProduct: (body: IProduct) => string | undefined;
+    deleteProduct: (id: number) => string | undefined;
     resetProducts: () => string;
   }
 }
@@ -198,7 +215,11 @@ fastify.decorate('addProduct', (body: IProduct): string | undefined => {
 
   if (!existingProduct)
   {
-    newProducts = [...products, {id: products.length += 1, ...body}];
+    const newProductsArray = [...products, {id: products.length += 1, ...body}];
+    newProducts = newProductsArray.sort(function(a,b){
+      return a.id - b.id;
+    })
+
     const newProductsJSON = JSON.stringify(newProducts, null, 2);
     fs.writeFileSync('./src/data/products.json', newProductsJSON);
     
@@ -206,6 +227,32 @@ fastify.decorate('addProduct', (body: IProduct): string | undefined => {
   }
    
   return undefined;
+});
+
+fastify.decorate('deleteProduct', (id: number) : string | undefined => {
+  const productsJSON = fs.readFileSync('./src/data/products.json', 'utf-8');
+  const products: IProductObj[] = JSON.parse(productsJSON);
+
+  const existingProduct = products.find((product: IProductObj) => product.id === id);
+
+  let newProducts = {};
+
+  if (existingProduct){
+    console.log(existingProduct.id);
+    let newProductsArray = products.filter( product => 
+      product.id !== existingProduct.id)
+    
+    newProducts = newProductsArray.sort(function(a,b){
+      return a.id - b.id;
+    })
+    
+    console.log(newProducts);
+    const newProductsJSON = JSON.stringify(newProducts, null, 2);
+    fs.writeFileSync('./src/data/products.json', newProductsJSON);
+    return newProductsJSON;
+  }
+  else 
+    return undefined;
 });
 
 fastify.decorate('resetProducts', (): string => {
