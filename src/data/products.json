@@ -28,22 +28,29 @@
     "price_id": "price_1HxVriGuhXEITAutt5KUKo2V"
   },
   {
-    "id": 7,
-    "name": "Fish",
-    "description": "Nasty Fish",
-    "price": 3,
-    "price_id": "price_1HxVriGuhXEITAutt5KUKo2V"
+    "id": 5,
+    "name": "Snickers",
+    "description": "nasty salmon",
+    "price": 4,
+    "price_id": "some id"
   },
   {
-    "id": 8,
+    "id": 6,
+    "name": "Fries",
+    "description": "nasty salmon",
+    "price": 4,
+    "price_id": "some id"
+  },
+  {
+    "id": 7,
     "name": "Salmon",
     "description": "nasty salmon",
     "price": 4,
     "price_id": "some id"
   },
   {
-    "id": 9,
-    "name": "Snickers",
+    "id": 8,
+    "name": "Toast",
     "description": "nasty salmon",
     "price": 4,
     "price_id": "some id"

@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import productsDefaultJSON from './data/products-default.json';
 import { escape } from 'querystring';
 import fastifyCors from '@fastify/cors';
+import { get } from 'http';
 
 // server declaration
 const fastify = Fastify({
@@ -92,6 +93,7 @@ async function userRoutes(fastify: FastifyInstance){
         201: {
           type: 'object',
           properties: {
+            error: {type: 'string'},
             name: { type: 'string' },
             description: { type: 'string' },
             price: { type: 'number' },
@@ -120,10 +122,11 @@ async function userRoutes(fastify: FastifyInstance){
       if (products)
         return await reply.code(201).send(products);
       else 
-        return await reply.code(201).send({
-          error: "product already exists", 
-          name: body.name 
-        });
+        return await reply.code(201).send({ 
+          error: "product already exists",
+          name: body.name,
+          description: body.description,
+          price: body.price} );
     }
   });
 
@@ -216,12 +219,15 @@ fastify.decorate('addProduct', (body: IProduct): string | undefined => {
   console.log("check if product exists");
   if (!existingProduct)
   {
-    const lastID = products[products.length -1].id;
-    const newProductsArray = [...products, {id: lastID +1, ...body}];
+    const newID = 0;
+    const IDs = products.map(product => product.id);
+    const missingID = getMissingNumber(IDs);
+    const newProductsArray = [...products, {id: missingID, ...body}];
     newProducts = newProductsArray.sort(function(a,b){
       return a.id - b.id;
     })
 
+    console.log(missingID);
     const newProductsJSON = JSON.stringify(newProducts, null, 2);
     fs.writeFileSync('./src/data/products.json', newProductsJSON);
     
@@ -294,3 +300,21 @@ async function main() {
 
 // Start server
 main();
+
+
+
+///////////////////////////////////////////
+// helper functions
+function getMissingNumber(nums: number[]): number{
+  console.log(nums);
+  function test(nums: number[]) {
+    for (let n = 1; n <= nums.length + 1; n++) {
+      if (nums.indexOf(n) === -1) 
+        return n;
+    }
+  }
+  console.log("Missing number of the said array: "+test(nums));
+  const missingNumber = test(nums);
+  
+  return missingNumber ?? nums.length+1;
+}

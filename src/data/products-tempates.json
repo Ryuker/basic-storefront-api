@@ -1,5 +1,54 @@
 [
   {
+    "id": 1,
+    "name": "Cheese",
+    "description": "Lovely cheese",
+    "price": 10,
+    "price_id": "price_1HuavSGuhXEITAut56IgndJf"
+  },
+  {
+    "id": 2,
+    "name": "Milk",
+    "description": "Yummi milk",
+    "price": 3,
+    "price_id": "price_1HxVriGuhXEITAutt5KUKo2V"
+  },
+  {
+    "id": 3,
+    "name": "Chocolate",
+    "description": "Sweet chocolate",
+    "price": 5.5,
+    "price_id": "price_1HxVriGuhXEITAutt5KUKo2V"
+  },
+  {
+    "id": 4,
+    "name": "Yoghurt",
+    "description": "Healthy yoghurt",
+    "price": 5,
+    "price_id": "price_1HxVriGuhXEITAutt5KUKo2V"
+  },
+  {
+    "id": 5,
+    "name": "Chocolate Bar",
+    "description": "Tasty chocolate bar",
+    "price": 2,
+    "price_id": "price_1HxVriGuhXEITAutt5KUKo2V"
+  },
+  {
+    "id": 7,
+    "name": "Fish",
+    "description": "Nasty Fish",
+    "price": 3,
+    "price_id": "price_1HxVriGuhXEITAutt5KUKo2V"
+  },
+  {
+    "id": 8,
+    "name": "Salmon",
+    "description": "nasty salmon",
+    "price": 4,
+    "price_id": "some id"
+  },
+  {
     "chocolate bar": {
       "id": 4,
       "name": "Chocolate Bar",
