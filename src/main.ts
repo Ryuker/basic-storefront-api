@@ -215,7 +215,7 @@ fastify.decorate('addProduct', (body: IProduct): string | undefined => {
 
   if (!existingProduct)
   {
-    const newProductsArray = [...products, {id: products.length += 1, ...body}];
+    const newProductsArray = [...products, {id: products.length += 2, ...body}];
     newProducts = newProductsArray.sort(function(a,b){
       return a.id - b.id;
     })

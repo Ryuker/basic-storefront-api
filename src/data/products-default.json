@@ -1,22 +1,31 @@
-[{
-  "id": 1,
-  "name": "Cheese",
-  "description": "Lovely cheese",
-  "price": 5.5
-},{
-  "id": 2,
-  "name": "Milk",
-  "description": "Yummi milk",
-  "price": 2.0
-},{
-  "id": 3,
-  "name": "Yoghurt",
-  "description": "Tasty yoghurt",
-  "price": 3.5
-},{
-  "id": 4,
-  "name": "Chocolate",
-  "description": "Sweet chocolate",
-  "price": 1.5
-}]
+[
+  {
+    "id": 1,
+    "name": "Cheese",
+    "description": "Lovely cheese",
+    "price": 5.5
+  },{
+    "id": 2,
+    "name": "Milk",
+    "description": "Yummi milk",
+    "price": 2.0
+  },{
+    "id": 3,
+    "name": "Yoghurt",
+    "description": "Tasty yoghurt",
+    "price": 3.5
+  },{
+    "id": 4,
+    "name": "Chocolate",
+    "description": "Sweet chocolate",
+    "price": 1.5
+  },
+  {
+    "id": 5,
+    "name": "Chocolate Bar",
+    "description": "Tasty chocolate bar",
+    "price": 2,
+    "price_id": "price_1HxVriGuhXEITAutt5KUKo2V"
+  }
+]
 
