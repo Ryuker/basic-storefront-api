@@ -106,12 +106,12 @@ async function userRoutes(fastify: FastifyInstance){
         price: number;
       }
     }>, reply: FastifyReply) => {
-      console.log(request);
+      // console.log(request);
       console.log("method: " + request.method);
       console.log("receiving product");
       const body: IProduct = request.body;
 
-      console.log(body);
+      // console.log(body);
 
       const products = await fastify.addProduct(body);
       console.log("products:");
@@ -207,15 +207,17 @@ fastify.decorate('addProduct', (body: IProduct): string | undefined => {
   // console.log(body);
   const productsJSON = fs.readFileSync('./src/data/products.json', 'utf-8');
   const products: IProductObj[] = JSON.parse(productsJSON);
-  console.log(products);
+  // console.log(products);
   
   const existingProduct = products.find((product: IProductObj) => product.name === body.name);
 
   let newProducts = {};
 
+  console.log("check if product exists");
   if (!existingProduct)
   {
-    const newProductsArray = [...products, {id: products.length += 2, ...body}];
+    const lastID = products[products.length -1].id;
+    const newProductsArray = [...products, {id: lastID +1, ...body}];
     newProducts = newProductsArray.sort(function(a,b){
       return a.id - b.id;
     })
