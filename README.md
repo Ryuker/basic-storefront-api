@@ -1,10 +1,11 @@
-# basic-storefront-api-fastify
-Basic api for a storefront using Fastify.
+# Basic Storefront API using Fastify
+Basic api for a storefront using Fastify. 
+Works with: [Basic Storefront Frontend - Typescript](https://github.com/Ryuker/react-practise-storefront-ts)
 
 uses node v16.14.2
 - Accepts GET, POST and DELETE requests
 - Requests return and update an Object Array in a products.json file
-- By passing a product id at the end of the url a single product is returned or deleted.
+- By passing a product at "{api location}/products/$id" at the end of the url in the frontend request a single product is returned or deleted.
 - Only unique product names get added as new product.
 
 
