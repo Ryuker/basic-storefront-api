@@ -5,7 +5,12 @@ Works with: [Basic Storefront Frontend - Typescript](https://github.com/Ryuker/r
 uses node v16.14.2
 - Accepts GET, POST and DELETE requests
 - Requests return and update an Object Array in a products.json file
-- By passing a product at "{api location}/products/$id" at the end of the url in the frontend request a single product is returned or deleted.
+
+By passing a product at 
+~~~ 
+{api location}/products/$id 
+~~~  
+ in the frontend request a single product is returned or deleted.
 - Only unique product names get added as new product.
 
 
